@@ -1,0 +1,303 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Plantilla para una carta en LaTeX, en español.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt]{scrartcl}
+
+% Esto es para poder escribir acentos directamente:
+\usepackage[latin1]{inputenc}
+% Esto es para que el LaTeX sepa que la carta está en español:
+\usepackage[spanish]{babel}
+\usepackage{cite}
+\title{PROYECTO DE TESIS}
+\subtitle{Magister en Ciencias de la Ingeniería Informática}
+\begin{document}
+\maketitle
+
+\begin{tabular}{l l}
+Titulo del Proyecto de Tesis: & 3D Scene reconstruction ..  \\
+Nombre del Alumno: & Juan Reyes \\
+Celular: & 82746132 \\
+E-mail: & juan.reyes.lopez@gmail.com \\
+Fecha de ingreso al programa: & \\
+Pregrado: & \\
+Profesor Guía de Tesis: & Luis Salinas \\
+Fecha Aprobación Tema de Tesis: & \\
+Fecha tentativa de término: & \\
+Comisión interna de graduación: & \\
+\end{tabular}
+
+
+\newpage
+
+\section{RESUMEN}
+
+Este proyecto de tesis enfrenta un importante problema en el área de visión computacional y robótica 
+llamado reconstrucción 3D (tridimensional) de escenas, que consiste en generar un modelo computacional 
+en tres dimensiones de un objeto o escena, a partir de un conjunto de observaciones tomadas desde diferentes puntos de vista.
+
+El objetivo es representar de la forma más precisa posible la geometría de la escena, obteniendo valiosa información, 
+que no está explíticamente contenida en una sóla captura, para luego usar esta información para la reconstrucción y visualización 
+de la escena o para una tarea más avanzada que dependa de la geometría de la escena. Algunas aplicaciones de la reconstrucción 3D 
+de objetos son: (i) Navegación autónoma de vehículos, donde es crucial contar la geometría de la escena para evitar obstáculos y seguir rutas. 
+(ii) Realidad aumentada, donde un objeto 3D es agregado a un video real de la escena. (iii) Inspección de partes en una planta de manofactura, 
+donde se requiere detectar defectos de fabricación de algunos objetos. (iv) Preservación de estatuas y edificios, para obtener una representación 
+digital de los objetos y contar con la posibilidad de reproducirlos o mantenerlos.
+  
+El hardware que será usado para capturar los datos es una cámara RGB-D (Kinect), un dispositivo que captura información tanto acerca del color como 
+de la profundidad de los objetos que se encuentren en su rango de visión. Hay un creciente interés en este tipo de cámaras, debido a que los sistemas 
+de reconstrucción 3D son caros y con este tipo de dispositivos es posible desarrollar un sistema más económico.
+
+El algoritmo a implementar para enfrentar el problema consiste en 
+una versión modificada del conocido algoritmo Iterative Closest Point. Este algoritmo se usa para registrar sucesivas capturas obtenidas mediante 
+la cámara RGB-D en un sistema de coordenadas 
+cartesiano tridimensional, para ello emparejan los puntos más cercanos de dos capturas sucesivas (nubes de puntos) y encuentra la 
+transformación rígida que permita minimizar la distancia entre 
+los puntos emparejados, repitiendose el proceso una y otra vez hasta la convergencia (no necesariamente al óptimo global).  
+
+Cuando trabajamos con puntos obtenidos de una escena 
+real, las nubes de puntos no son iguales, dado que los datos capturados por la cámara RGB-D contienen ruido y dos 
+capturas sucesivas corresponden a distintas 
+vistas de un objeto (si la cámara o el objeto se movieron), debido a ello existen muchas variantes del algoritmo ICP.
+
+Uno de los primeros problemas a enfrentar es la presencia de ruido en la captura y en la reconstrucción final, se buscará 
+reducir este problema mediante la aplicación de 
+un filtro al mapa de profundidad. El siguiente problema es que el algoritmo ICP no necesariamente converge al óptimo global, 
+es por ello que se propondrán unas  técnicas 
+para descartar aquellos puntos que entorpecen el procedimiento. 
+
+Al término del presente proyecto de tésis se presentará un software 
+que permitirá reconstruir escenas 3D utilizando las técnicas propuestas 
+con una cámara Kinect.
+
+\newpage
+
+\section{ABSTRACT}
+
+This thesis project deals with an important problem in the computer vision and robotics,
+ called 3D scene reconstruction, where a computer three-dimensional model is generated 
+from a set  of observations from different points of view of an object or scene.  
+The objetive is to represent in the most accurate way the geometric scene
+ details, obtaining rich information about the scene that is not explicity contained in a 
+single capture and then use this to reconstruct the scene or use it
+ to perform a more advanced task that depends on the scene geometry. Some applications of 3D 
+scene reconstruction are : (i) Autonumous vehicle or robot navigation, where it is crucial 
+to have the scene geometry in order to locate
+ paths and obstacles.  (ii) Augmented Reality, where a virtual 3D object is added
+ to a real video of the scene. (iii) Parts inspection in a manufacturing plant, where
+ is necesary to detect fabrication defects on some objects. (iv) Statues and Buildings
+ preservation, in order to have a digital representation of the objects and being
+ able to reproduce or mantain them.
+
+The hardware that will be used in this project to capture the data is a low cost RGB-D cam
+era, a device that captures both geometrical and visual information. There is a growing in
+terest on this kind of devices, because the 3D reconstruction of an scene always has been 
+an expensive task (in terms of monetary cost) and this cameras are cheaper than a laser 3D
+ scanner.
+
+The proposed solution consists on the use of a variation of a widely used algorithm called
+ Iterative Closest Point. This algorithm is used to register sucesive captures into a comm
+on coordinate system (three-dimensional Cartesian coordinate system). This is done in two 
+main steps that are repeated until convergence: for each point of the first cloud of point
+s the algorithm finds the closest point on the second cloud, thus obtaining a set of pairs
+ of points. The algorithm then computes the rigid transformation that minimizes the distan
+ce between those point pairs and uses this transformation to find a new set of closests po
+ints. This process is repeated until the transformation doesn't change more than specified
+ threshold and the algorithm converges at least to a local optimum. 
+
+When we are working with real data, the point clouds that we are trying to align are not i
+dentical, because two captures are different views of the same object or scene and there i
+s noise in the captures. Due to this, there are multiple variations of the ICP algorithm.
+
+One of the first problems to deal with is the presense of noise in the captures, this will
+ be mitigated applying a filter to the depth map. Another important problem is that ICP no
+t always converges to a global optimum, for that reason techniques for discarding non rele
+vant points will be proposed.
+ 
+The main deliverable of this thesis project will be a software for 3D reconstruction with 
+Kinect, implementing the proposed techniques.
+
+\newpage
+
+\section{FORMULACIÓN GENERAL DE LA PROBLEMÁTICA Y PROPUESTA DE TESIS}
+
+\subsection{Definición del problema}
+
+
+        Mediante una cámara RGB-D se obtienen sucesivas capturas de una escena, a un máximo de 30 capturas 
+        por segundo, que consisten en:
+
+               Un mapa de   profundidad : imagen de 640x480, 11 bits por pixel, 
+              cuyos  valores de intensidad son proporcionales a la distancia del objeto presente en la imagen al sensor.
+
+               Una imagen a color RGB de la escena capturada: imagen de 640x480, 3 canales, 1 byte por canal.
+
+          Utilizando el mapa de profundidad, la imagen a color y los datos de calibración provistos por el sensor, 
+        se obtiene una nube de puntos: conjunto de puntos correspondientes 
+          a cada pixel del mapa de profundidad, cuya ubicación en el espacio corresponde 
+            a la distancia en mm del objeto (al que corresponde el pixel) al sensor. Además cada punto contiene 
+           el color, que se extrae de la imagen RGB.
+
+Cada nube de puntos tiene su origen y sistema de coordenadas orientado acorde a la cámara RGB-D 
+ como muestra la siguiente figura:
+
+El objetivo es registrar estos puntos en un sistema de coordenadas Cartesiano tridimensional y que éstos queden 
+ correctamente 
+alineados, de manera que tras una inspección visual se pueda corroborar que su dispoción corresponde a la 
+escena capturada. Generándose un modelo 3D de la escena,
+ con lo que se permite su visualización desde distintos ángulos.
+
+Se desea, para cada par de capturas sucesivas, encontrar la transformación rígida que las alínea, lo que 
+es equivalente a la rotación y traslación de la cámara. Mediante esta transformación es posible posicionar  
+correctamente los puntos capturados y su búsqueda constituye el tema central de este proyecto de tesis.
+
+Cabe destacar que un proceso de reconstrucción típico añade dos pasos adicionales: Generacion de 
+malla y mapeo de texturas. En el primer paso, se ajusta una malla de polígonos a la nube 
+de puntos, dando continuidad a las superficies capturadas. En el segundo paso 
+ se da color a cada polígono. No obstante, sin estos pasos, es posible
+ visualizar la escena reconstruida, mostrando directamente las nubes de puntos (estando cada punto 
+con su color correspondiente, obtenido de la cámara RGB). 
+
+\subsection{Formulación Matemática}
+
+Sean los conjuntos de puntos tridimensionales i = 1,2,...,N correspondientes a dos capturas sucesivas de la escena.
+
+Se desea encontrar R,t que minimize:
+
+
+
+Donde R es una matriz de rotación de 3x3,  es un vector de traslación de tres dimensiones.
+
+\subsection{Estado del Arte}
+
+
+Hay un creciente interés por la reconstrucción 3D de escenas usando cámaras RGB-D, sobre todo gracias 
+a la aparición de dispositivos de bajo costo como Kinect, Xtion PRO, etc. que se pueden adquirir por
+menos de 300 dolares. Si se desea hacer una reconstrucción 3D con una cámara común y corriente, 
+se debe calcular el mapa de profundidad 
+(imagen cuyos niveles de intensidad son proporcionales a la distancia de los objetos a la cámara) mediante extracción de puntos identificables entre 
+sucesivas capturas y triangulación. La ventaja de utilizar cámaras RGB-D radica en que 
+calculan automáticamente el mapa de 
+profundidad, simplificando el proceso.
+
+Actualmente es posible
+ encontrar numerosos productos comerciales recientes de reconstrucción 3D, tales como ReconstructMe [1],
+Skanect [2], etc. Que ocupan dipositivos de bajo costo y por ende son accesibles para un mayor rango de usuarios.
+
+
+ Hace un par de años era muy difícil realizar una reconstrucción en tiempo real en un computador promedio (un modelo que se puede 
+visualizar y actualizar al instante, a medida que se van obteniendo nuevas capturas), 
+debido que no se tenía la 
+capacidad de cómputo suficiente, hoy en día es cada vez más común encontrar software que realiza la reconstrucción 
+en tiempo real, esto gracias al uso de la GPU (Graphics Processing Unit). 
+       La mayoría de los algoritmos de reconstrucción utiliza alguna variante del conocido 
+algoritmo ICP (Iterative Closest Point), publicado en 1992 \cite{mckay92}, para la correcta alineación 
+de los puntos. Hay diversas propuestas 
+para acelerar la convergencia del algoritmo y realizar una alineación de mayor calidad, gran parte de ellas
+ mezclan información visual de la cámara RGB con información geométrica de la cámara de profundidad.
+
+Reconstrucción de escenas interiores mediante una cámara RGB-D es realizada en \cite{henry}, utilizando tanto la 
+información visual como geométrica. Para ello emplean una variante del algoritmo ICP llamada
+RGBD-ICP, en la que encuentran puntos fáciles de identificar en las imágenes RGB, que luego proyectan 
+al espacio 3D usando la información de profundidad. Iterativamente se busca una transformación 
+que minimice la distancia tanto entre los puntos obtenidos mediante la imagen RGB como 
+los obtenidos mediante ICP. Otro trabajo en el que se combina tanto información visual como geométrica 
+es \cite{biber03}, en donde en lugar de utilizar ICP usan un algoritmo llamado Normal Distributions Transform
+
+(NDT)
+, algoritmo que realiza un proceso de optimización sobre un modelo estadístico de los puntos 3D 
+para encontrar la transformación. Este algoritmo no trabaja sobre puntos individuales, sino que construye 
+un conjunto de distribuciones normales a partir de los puntos, formando una grilla. Luego busca 
+iterativamente aquella transformación que maximize la suma de la evaluación de las 
+distribuciones normales de todos los puntos.
+
+Un trabajo muy interesante es realizado en \cite{dumitru13}, donde se utiliza la transformada de Hough para detectar planos y reconstruir escenas interiores. Ellos trabajan utilizando una nube de puntos obtenida de un sensor laser. Además una SVM (Support Vector Machine) es usada para reconocer puertas y ventanas (asumiendo que las ventanas son siempre rectangulares). Su objetivo más que generar una hermosa reconstrucción, es representar fielmente la geometría de la escena.
+
+En \cite{bethencourt12} se utiliza una cámara RGB-D combinada con una unidad de medición inercial (acelerómetro, giroscopio y magnetómetro). Su técnica consiste en definir intervalos para la transfomación buscada entre dos sucesivas capturas y luego contraer estos intervalos usando las ecuaciones de transformación entre puntos correspondientes. Para encontrar los puntos correspondientes entre las capturas utilizan las imágenes RGB, aplicando un algoritmo de matching llamado Afine SIFT, el cual busca puntos de interés invariantes a traslación, rotación, pero además es capaz de manejar transformaciones afines. La unidad de medición inercial es utilizada para acortar los intervalos iniciales.
+
+En \cite{may2009} un robot industrial KUKA es usado para mover una cámara ToF (Time of Flight), este tipo de cámaras calcula la distancia a partir de la velocidad de la luz, el propósito de usar un robot es guardar el movimiento preciso de la cámara, para así poder evalúar el desempeño del algoritmo. Ellos usan ICP Frustrum, una variante de ICP que no considera aquellos puntos que no se traslapan entre sucesivas capturas. Este trabajo ilustra uno de los problemas que hay que enfrentar al evaluar un algoritmo de reconstrucción: Se dificulta medir la calidad de la reconstrucción y aún mucho más hacer una comparación cuantitativa. Una de las técnicas utilizadadas es comparar el movimiento real de la cámara, con el movimiento estimado por el algoritmo. Pese a que esto representa sólo una parte del proceso completo, es una buena alternativa cuando no se cuenta con un sistema de reconstrucción laser. En caso de contar con un sistema laser, lo que se hace es comparar la escena reconstruida con el sistema laser con la generada por el algoritmo a evaluar. Otra técnica usada para evaluar algoritmos de reconstrucción es comparar la distancias reales entre ciertos objetos con las distancias obtenidas en la reconstrucción.
+
+
+
+En \cite{weise08} el usuario debe mover con sus manos el objeto frente al sensor RGB-D, generandose un modelo 3D
+ mediante una variante de ICP llamada Fast ICP, que trabaja sobre el mapa de profundidad, en lugar 
+de sobre la nube de puntos. En este trabajo tambien se utilizan tanto características visuales como geométricas. Además se debe lidiar con la constante aparición de las manos del usuario frente al sensor, para ello se filtra la piel del usuario por color. Este tipo de escaneo es conocido como In-hand modeling. 
+
+Uno de los trabajos que ha obtenido mejores resultados es [10], en donde la escena se reconstruye en tiempo real, además de permitir que el usuario interactúe con los objetos de la escena. Para ello utilizan una implementación del algoritmo ICP para GPU, utilizando todos los puntos capturados. Usan una representación volumétrica de la escena que se consulta acorde al punto de visión para generar el modelo 3D en tiempo real. Cabe destacar que ellos no alinean las sucesivas capturas entre sí, sino que alinean cada nueva captura con la escena en construcción. Generando un mapa de profundidad artificial a partir de la escena reconstruida para poder realizar la alineación.
+
+El trabajo precursor de \cite{izadi} es \cite{Newcombe10livedense}, en el cual, increíblemente, se utilizó sólo una cámara RGB para reconstruir las escenas. Para ello se realizaban reconstrucciones locales, en las que se consideraba un conjunto de capturas que tenían traslape con una captura de referencia, posteriormente estas reconstrucciones locales se  integraban a un modelo global, el que se deformaba y aumentaba su nivel de detalle a medida que se adquiría más información. Este trabajo tiene un gran mérito, pues tuvo que lidiar con el problema de obtener la nube de puntos a partir de una secuencia de fotografías a color. Problema que ya se encuentra resuelto al trabajar con una cámara RGB-D.
+
+Todos los sistemas de reconstrucción 3D tienen alguna limitación, ya sea respecto a la iluminación de la escena, la reflectividad de los materiales, la capacidad de computo requerida, la geometría de la escena capturada, el movimiento del sensor, el movimiento de los objetos presentes en la escena o la aparición de nuevos objetos, etc. Ello hace que continuamente se propongan nuevas técnicas.
+
+
+\subsection{Propuesta}
+
+ Propuesta
+
+La propuesta se puede dividir en tres grandes bloques:
+
+1.- Filtro bilateral aplicado a nubes de puntos para reducir ruido
+2.- Algoritmo ICP modificado
+2.1 Filtro en mapa de profunidad para eliminar puntos irrelevantes
+2.2 Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada (R,)
+
+3.- Algoritmo para evitar agregar puntos que ya fueron previamente registrados
+
+
+		1.- Filtro bilateral
+
+El sensor genera el mapa de profundidad proyectando un patrón de puntos infrarojos sobre la 
+escena, muchos de estos puntos son absorvidos o distorcionados por ciertos materiales, lo que afecta 
+         la calidad de la captura y genera ruido.
+
+	     Muchos puntos capturados están posicionados incorrectamente, por ejemplo a una distancia de 5m del sensor, se pueden encontrar desviaciones de 
+hasta 4 cm según [12].  Las imperfecciones de medición son producidas por: defectos del sensor,  los materiales, la luminocidad y geometría de la escena.  
+
+        El objetivo del filtro bilateral es reducir el ruido presente en cada mapa de pronfunidad generado, para ello calcula  el nuevo valor de cada pixel basandose en sus vecinos más cercanos, con una influencia proporcional a la distancia real (mm) y la intensidad, de cada vecino respecto al pixel que está siendo actualizado.
+
+2.- Algoritmo ICP modificado       
+
+        Las dos grandes modificaciones propuestas para el algoritmo ICP son:
+
+ 
+Filtro en mapa de profunidad para eliminar puntos irrelevantes:
+ 
+ Gracias a que se cuenta con el mapa de profundidad, se facilita la identificación de aquellos puntos que son más relevantes, pudiendose utilizar técnicas usadas en procesamiento de imágenes . Se propone ignorar aquellos pixeles que no presentan grandes variaciones en su vecindario (la misma idea que usa para detección de bordes en imágenes). Evitando así, que grandes cantidades de puntos, que no son necesariamente representativas hagan que el algoritmo converja a una solución incorrecta. 
+
+Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada (R,):
+
+Además se inicializa el algoritmo (se le da una primera aproximación de R y ) aplicando Optical Flow a las imágenes RGB.  El algoritmo selecciona puntos que sean identificables entre dos pares de imágenes (puntos de interés) y luego encuentra su vector traslación (u,v). 
+Esto permite encontrar correspondencias entre las imágenes y luego, usando la información 3D provista por el sensor, es posible obtener la posición 3D de estos puntos. Una vez obtenida la posición 3D de estos puntos se encuentra la transformación R, mediante factorización SVD.
+
+
+Algoritmo Iterative Closest Point modificado :
+
+Este algoritmo recibe como entrada dos nubes de puntos y calcula la transformación rígida
+(rotación y traslación)  
+para que ambas nubes queden alineadas. Los pasos que sigue son los siguientes:
+
+1.- Inicializar matriz de rotación R  y vector de traslación  mediante Optical Flow.
+
+2.- Aplicar rotación y traslación a la nube A, obtieniendo A' y para cada punto de A' encontrar 
+el más cercano en la nube B. Utilizando solo aquellos puntos que pasaron el filtro de bordes.
+
+3.- Calcular la transformación rígida (rotación y traslación)  para A que minimiza la distancia entre los puntos 
+emparejados de A' y B, guardar esta transformación en R,t.
+
+4.- Si los cambios en R,t son menores que un umbral, terminar. Sino volver a 2.
+
+Para que algoritmo converja a la solución deseada, el desplazamiento entre dos capturas sucesivas 
+no debe ser 
+        excesivo (debe existir un traslape entre  ambas capturas).
+
+
+Algoritmo para evitar agregar puntos que ya fueron previamente registrados
+
+Si un mismo punto es agregado varias veces a la escena con mínimas variaciones en su posición, se está desperdiciando memoria y además puede producir artefactos indeseados, debido a que un conjunto de puntos que conforma un objeto sufrirá leves alteraciones a medida que se agregan nuevas capturas, considerando que siempre habrá un pequeño error en la estimación de su posición. Por ello, se propone que antes de agregar un nuevo punto a la reconstrucción, se verifique que su región de destino no tenga puntos dentro de un radio determinado, evitando con esto perder detalles debido a la sucesiva acumulación de error.
+ 
+\bibliography{tesis}{}
+\bibliographystyle{alpha}
+
+\end{document}
