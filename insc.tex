@@ -11,6 +11,8 @@
 % Esto es para que el LaTeX sepa que la carta está en español:
 \usepackage[spanish]{babel}
 \usepackage{cite}
+\usepackage{url}
+\usepackage{graphicx}
 \title{PROYECTO DE TESIS}
 \subtitle{Magister en Ciencias de la Ingeniería Informática}
 \begin{document}
@@ -91,30 +93,30 @@ to have the scene geometry in order to locate
  preservation, in order to have a digital representation of the objects and being
  able to reproduce or mantain them.
 
-The hardware that will be used in this project to capture the data is a low cost RGB-D cam
-era, a device that captures both geometrical and visual information. There is a growing in
+The hardware that will be used in this project to capture the data is a low cost RGB-D camera, 
+a device that captures both geometrical and visual information. There is a growing in
 terest on this kind of devices, because the 3D reconstruction of an scene always has been 
 an expensive task (in terms of monetary cost) and this cameras are cheaper than a laser 3D
  scanner.
 
 The proposed solution consists on the use of a variation of a widely used algorithm called
- Iterative Closest Point. This algorithm is used to register sucesive captures into a comm
-on coordinate system (three-dimensional Cartesian coordinate system). This is done in two 
-main steps that are repeated until convergence: for each point of the first cloud of point
-s the algorithm finds the closest point on the second cloud, thus obtaining a set of pairs
- of points. The algorithm then computes the rigid transformation that minimizes the distan
-ce between those point pairs and uses this transformation to find a new set of closests po
-ints. This process is repeated until the transformation doesn't change more than specified
+ Iterative Closest Point. This algorithm is used to register sucesive captures into a common 
+coordinate system (three-dimensional Cartesian coordinate system). This is done in two 
+main steps that are repeated until convergence: for each point of the first cloud of points 
+the algorithm finds the closest point on the second cloud, thus obtaining a set of pairs
+ of points. The algorithm then computes the rigid transformation that minimizes the distance 
+between those point pairs and uses this transformation to find a new set of closests points. 
+This process is repeated until the transformation doesn't change more than specified
  threshold and the algorithm converges at least to a local optimum. 
 
-When we are working with real data, the point clouds that we are trying to align are not i
-dentical, because two captures are different views of the same object or scene and there i
-s noise in the captures. Due to this, there are multiple variations of the ICP algorithm.
+When we are working with real data, the point clouds that we are trying to align are not 
+identical, because two captures are different views of the same object or scene and there 
+is noise in the captures. Due to this, there are multiple variations of the ICP algorithm.
 
 One of the first problems to deal with is the presense of noise in the captures, this will
- be mitigated applying a filter to the depth map. Another important problem is that ICP no
-t always converges to a global optimum, for that reason techniques for discarding non rele
-vant points will be proposed.
+ be mitigated applying a filter to the depth map. Another important problem is that ICP not 
+always converges to a global optimum, for that reason techniques for discarding non 
+relevant points will be proposed.
  
 The main deliverable of this thesis project will be a software for 3D reconstruction with 
 Kinect, implementing the proposed techniques.
@@ -129,11 +131,14 @@ Kinect, implementing the proposed techniques.
         Mediante una cámara RGB-D se obtienen sucesivas capturas de una escena, a un máximo de 30 capturas 
         por segundo, que consisten en:
 
-               Un mapa de   profundidad : imagen de 640x480, 11 bits por pixel, 
-              cuyos  valores de intensidad son proporcionales a la distancia del objeto presente en la imagen al sensor.
+	\begin{itemize}
+       	
+	\item Mapa de   profundidad : imagen de 640x480, 11 bits por pixel, 
+      cuyos  valores de intensidad son proporcionales a la distancia del objeto presente en la imagen al sensor.
 
-               Una imagen a color RGB de la escena capturada: imagen de 640x480, 3 canales, 1 byte por canal.
+      	\item Imagen a color RGB de la escena capturada: imagen de 640x480, 3 canales, 1 byte por canal.
 
+	\end{itemize}
           Utilizando el mapa de profundidad, la imagen a color y los datos de calibración provistos por el sensor, 
         se obtiene una nube de puntos: conjunto de puntos correspondientes 
           a cada pixel del mapa de profundidad, cuya ubicación en el espacio corresponde 
@@ -142,6 +147,11 @@ Kinect, implementing the proposed techniques.
 
 Cada nube de puntos tiene su origen y sistema de coordenadas orientado acorde a la cámara RGB-D 
  como muestra la siguiente figura:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{img/coordinates}
+\end{figure}
 
 El objetivo es registrar estos puntos en un sistema de coordenadas Cartesiano tridimensional y que éstos queden 
  correctamente 
@@ -162,13 +172,16 @@ con su color correspondiente, obtenido de la cámara RGB).
 
 \subsection{Formulación Matemática}
 
-Sean los conjuntos de puntos tridimensionales i = 1,2,...,N correspondientes a dos capturas sucesivas de la escena.
+Sean los conjuntos de puntos tridimensionales ${a_i},{b_i} ;i = 1,2,...,N$ correspondientes a dos capturas sucesivas de la escena.
 
-Se desea encontrar R,t que minimize:
+Se desea encontrar $R,\vec{t}$ que minimize:
 
+$$
+\sum\limits_{i=1}^N Ra_i - b_i - \vec{t}
+$$
 
-
-Donde R es una matriz de rotación de 3x3,  es un vector de traslación de tres dimensiones.
+ 
+Donde $R$ es una matriz de rotación de $3x3$, $\vec{t}$ es un vector de traslación de tres dimensiones.
 
 \subsection{Estado del Arte}
 
@@ -183,8 +196,8 @@ calculan automáticamente el mapa de
 profundidad, simplificando el proceso.
 
 Actualmente es posible
- encontrar numerosos productos comerciales recientes de reconstrucción 3D, tales como ReconstructMe [1],
-Skanect [2], etc. Que ocupan dipositivos de bajo costo y por ende son accesibles para un mayor rango de usuarios.
+ encontrar numerosos productos comerciales recientes de reconstrucción 3D, tales como ReconstructMe \cite{reconstructme},
+Skanect\cite{skanect}, etc. Que ocupan dipositivos de bajo costo y por ende son accesibles para un mayor rango de usuarios.
 
 
  Hace un par de años era muy difícil realizar una reconstrucción en tiempo real en un computador promedio (un modelo que se puede 
@@ -204,9 +217,7 @@ RGBD-ICP, en la que encuentran puntos fáciles de identificar en las imágenes RGB
 al espacio 3D usando la información de profundidad. Iterativamente se busca una transformación 
 que minimice la distancia tanto entre los puntos obtenidos mediante la imagen RGB como 
 los obtenidos mediante ICP. Otro trabajo en el que se combina tanto información visual como geométrica 
-es \cite{biber03}, en donde en lugar de utilizar ICP usan un algoritmo llamado Normal Distributions Transform
-
-(NDT)
+es \cite{biber03}, en donde en lugar de utilizar ICP usan un algoritmo llamado Normal Distributions Transform (NDT)
 , algoritmo que realiza un proceso de optimización sobre un modelo estadístico de los puntos 3D 
 para encontrar la transformación. Este algoritmo no trabaja sobre puntos individuales, sino que construye 
 un conjunto de distribuciones normales a partir de los puntos, formando una grilla. Luego busca 
@@ -234,70 +245,181 @@ Todos los sistemas de reconstrucción 3D tienen alguna limitación, ya sea respect
 
 \subsection{Propuesta}
 
- Propuesta
-
 La propuesta se puede dividir en tres grandes bloques:
 
-1.- Filtro bilateral aplicado a nubes de puntos para reducir ruido
-2.- Algoritmo ICP modificado
-2.1 Filtro en mapa de profunidad para eliminar puntos irrelevantes
-2.2 Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada (R,)
+\begin{enumerate}
+\item Filtro bilateral aplicado a nubes de puntos para reducir ruido
+\item Algoritmo ICP modificado
+\begin{enumerate}
+\item Filtro en mapa de profunidad para eliminar puntos irrelevantes
+\item Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada $(R,\vec{t})$
+\end{enumerate}
+\item Algoritmo para evitar agregar puntos que ya fueron previamente registrados
+\end{enumerate}
 
-3.- Algoritmo para evitar agregar puntos que ya fueron previamente registrados
 
-
-		1.- Filtro bilateral
+\subsubsection{Filtro bilateral}
 
 El sensor genera el mapa de profundidad proyectando un patrón de puntos infrarojos sobre la 
 escena, muchos de estos puntos son absorvidos o distorcionados por ciertos materiales, lo que afecta 
          la calidad de la captura y genera ruido.
 
 	     Muchos puntos capturados están posicionados incorrectamente, por ejemplo a una distancia de 5m del sensor, se pueden encontrar desviaciones de 
-hasta 4 cm según [12].  Las imperfecciones de medición son producidas por: defectos del sensor,  los materiales, la luminocidad y geometría de la escena.  
+hasta 4 cm según \cite{khoshelham12}.  Las imperfecciones de medición son producidas por: defectos del sensor,  los materiales, la luminocidad y geometría de la escena.  
 
         El objetivo del filtro bilateral es reducir el ruido presente en cada mapa de pronfunidad generado, para ello calcula  el nuevo valor de cada pixel basandose en sus vecinos más cercanos, con una influencia proporcional a la distancia real (mm) y la intensidad, de cada vecino respecto al pixel que está siendo actualizado.
 
-2.- Algoritmo ICP modificado       
+\subsubsection{Algoritmo ICP modificado}       
 
         Las dos grandes modificaciones propuestas para el algoritmo ICP son:
 
  
-Filtro en mapa de profunidad para eliminar puntos irrelevantes:
+\paragraph{Filtro en mapa de profunidad para eliminar puntos irrelevantes:}
  
  Gracias a que se cuenta con el mapa de profundidad, se facilita la identificación de aquellos puntos que son más relevantes, pudiendose utilizar técnicas usadas en procesamiento de imágenes . Se propone ignorar aquellos pixeles que no presentan grandes variaciones en su vecindario (la misma idea que usa para detección de bordes en imágenes). Evitando así, que grandes cantidades de puntos, que no son necesariamente representativas hagan que el algoritmo converja a una solución incorrecta. 
 
-Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada (R,):
+\paragraph{Uso de algoritmo Optical Flow para dar primera aproximación de la transformación buscada $\mathbf{(R,\vec{t})}$:}
 
-Además se inicializa el algoritmo (se le da una primera aproximación de R y ) aplicando Optical Flow a las imágenes RGB.  El algoritmo selecciona puntos que sean identificables entre dos pares de imágenes (puntos de interés) y luego encuentra su vector traslación (u,v). 
+Se inicializa el algoritmo (se le da una primera aproximación de $R$ y $\vec{t}$) aplicando Optical Flow a las imágenes RGB.  El algoritmo selecciona puntos que sean identificables entre dos pares de imágenes (puntos de interés) y luego encuentra su vector traslación (u,v). 
 Esto permite encontrar correspondencias entre las imágenes y luego, usando la información 3D provista por el sensor, es posible obtener la posición 3D de estos puntos. Una vez obtenida la posición 3D de estos puntos se encuentra la transformación R, mediante factorización SVD.
 
 
-Algoritmo Iterative Closest Point modificado :
+\paragraph{Algoritmo Iterative Closest Point modificado :}
 
 Este algoritmo recibe como entrada dos nubes de puntos y calcula la transformación rígida
 (rotación y traslación)  
 para que ambas nubes queden alineadas. Los pasos que sigue son los siguientes:
 
-1.- Inicializar matriz de rotación R  y vector de traslación  mediante Optical Flow.
+\begin{enumerate}
 
-2.- Aplicar rotación y traslación a la nube A, obtieniendo A' y para cada punto de A' encontrar 
+\item Inicializar matriz de rotación R  y vector de traslación  mediante Optical Flow.
+
+\item Aplicar rotación y traslación a la nube A, obtieniendo A' y para cada punto de A' encontrar 
 el más cercano en la nube B. Utilizando solo aquellos puntos que pasaron el filtro de bordes.
 
-3.- Calcular la transformación rígida (rotación y traslación)  para A que minimiza la distancia entre los puntos 
+\item Calcular la transformación rígida (rotación y traslación)  para A que minimiza la distancia entre los puntos 
 emparejados de A' y B, guardar esta transformación en R,t.
 
-4.- Si los cambios en R,t son menores que un umbral, terminar. Sino volver a 2.
+\item Si los cambios en R,t son menores que un umbral, terminar. Sino volver a 2.
+
+\end{enumerate}
 
 Para que algoritmo converja a la solución deseada, el desplazamiento entre dos capturas sucesivas 
-no debe ser 
-        excesivo (debe existir un traslape entre  ambas capturas).
+no debe ser  excesivo (debe existir un traslape entre  ambas capturas).
 
+\subsubsection{Algoritmo para evitar agregar puntos que ya fueron previamente registrados}
 
-Algoritmo para evitar agregar puntos que ya fueron previamente registrados
-
-Si un mismo punto es agregado varias veces a la escena con mínimas variaciones en su posición, se está desperdiciando memoria y además puede producir artefactos indeseados, debido a que un conjunto de puntos que conforma un objeto sufrirá leves alteraciones a medida que se agregan nuevas capturas, considerando que siempre habrá un pequeño error en la estimación de su posición. Por ello, se propone que antes de agregar un nuevo punto a la reconstrucción, se verifique que su región de destino no tenga puntos dentro de un radio determinado, evitando con esto perder detalles debido a la sucesiva acumulación de error.
+Si un mismo punto es agregado varias veces a la escena con mínimas variaciones en su posición, se está desperdiciando memoria 
+y además puede producir artefactos indeseados, debido a que un conjunto de puntos que conforma un objeto sufrirá leves alteraciones 
+a medida que se agregan nuevas capturas, considerando que siempre habrá un pequeño error en la estimación de su posición. Por ello, 
+se propone que antes de agregar un nuevo punto a la reconstrucción, se verifique que su región de destino no tenga puntos dentro de 
+un radio determinado, evitando con esto perder detalles debido a la sucesiva acumulación de error.
  
 \bibliography{tesis}{}
 \bibliographystyle{alpha}
+
+
+\subsection{HIPÓTESIS DE TRABAJO}
+
+\begin{enumerate}
+
+\item Los puntos que presentan una mayor variación en el mapa de pronfudidad permiten obtener una mejor reconstrucción de la escena: 
+El mapa de profundidad es una imagen en escala de grises,  por lo que se le puede aplicar un filtro de bordes, conservando solo aquellos 
+pixeles que presesentan una mayor variación en su vecindad y evitando que superficies planas (como por ejemplo paredes) dominen el proceso 
+de alineación entre dos capturas sucesivas debido a contener una gran cantidad de puntos.
+
+\item El reducir la redundancia de puntos evita artefactos indeseados en la reconstrucción: 
+Si se agregan puntos correspondientes a objetos que ya fueron agregados a la nube global de puntos, 
+hay una pérdida de detalles, pues la cantidad de puntos incorrectamente posicionados aumenta, por ende 
+se propone agregar solo puntos que no se hayan agregado previamente.
+
+\item El filtro bilateral mejora los resultados de la reconstrucción: Este filtro se aplica al mapa de profundidad, 
+para calcular el nuevo valor de un pixel se realiza un promedio ponderado de su vecindario, dando mayor ponderación a 
+sus vecinos más cercanos.
+
+\item La aplicación de Optical Flow en las imágenes RGB para una primera estimación de la transformación  mejora la alineación 
+de los puntos: Mediante Optical Flow es posible obtener parejas de puntos correspondientes (mismos puntos identificados en ambas imágenes) 
+entre dos sucesivas imágenes RGB,  luego se pueden obtener las coordenadas 3D de estos puntos usando el mapa de profundidad y con estos 
+pares de coordenadas 3D es posible obtener una primera estimación del movimiento de la cámara, luego se puede inicializar ICP usando esta estimación. 
+Esto disminuye la cantidad de iteraciones requeridas para una correcta alineación.
+
+\end{enumerate}
+
+\subsection{OBJETIVOS GENERALES}
+
+\begin{itemize}
+
+\item Producir una variante del algoritmo ICP que permita una reconstrucción 
+3D (generación de un modelo tridimensional a color)  de espacios cerrados (por 
+ejemplo una habitación u oficina).
+
+
+\item Realizar una publicación del trabajo en una revista o conferencia 
+     internacional reconocida en el tema.
+
+\end{itemize}
+
+\subsection{OBJETIVOS ESPECÍFICOS}
+
+Verificar si principales modificaciones realizadas al algoritmo efectivamente 
+contribuyen en la obtención de mejores resultados:
+ 
+\begin{itemize}
+  \item  Filtro bilateral aplicado a nubes de puntos para reducir ruido 
+  \item Filtro en mapa de profunidad para eliminar puntos irrelevantes
+  \item Uso de algoritmo Optical Flow para dar primera aproximación de la transformación (R,)
+  \item Algoritmo para evitar agregar puntos que ya fueron previamente registrados
+
+\end{itemize}
+
+\subsection{METODOLOGÍA Y PLAN DE TRABAJO}
+
+A la fecha se ha trabajado paralelamente en varios aspectos del proyecto de tesis. Ya se tiene 
+software funcional de reconstrucción, falta pulir y mejorar. 
+Se ha escrito gran parte del estado del arte y del documento de tesis.
+
+
+\begin{tabular}{l l l}
+
+Actividad & Estado actual & Fecha término \\
+
+Estado del arte & 90\% & \\
+
+Desarrollo de software con solución propuesta & 85\% & \\ 
+
+Evaluación de la solución propuesta & 30\% & \\
+
+Escritura del documento final de tesis & 50\% & \\
+
+Escritura de paper & 0\% & \\
+
+\end{tabular}
+
+\subsection{APORTES Y RESULTADOS ESPERADOS}
+
+\begin{itemize}
+
+\item Método para reconstrucción 3D que aproveche tanto características visuales como 
+geométricas.
+
+\item Implementación de método propuesto en software de reconstrucción 3D.
+
+\item Publicación en revista o conferencia internacional importante.
+
+\end{itemize}
+
+\subsection{FORMAS DE VALIDACIÓN}
+
+Una importante forma de validación es la inspección visual de los resultados, algo ampliamente 
+usado en el área de reconstrucción 3D, dado que no hay ningún sistema artificial que supere 
+la capacidad humana para reconocer estructuras visuales y geométricas.
+
+A simple vista se pueden detectar artefactos indeseados como por ejemplo: Alineación incorrecta
+ de las capturas, pérdida de detalles en ciertas áreas de la escena, presencia de ruido, etc.
+
+Por otra parte se aplicarán dos técnicas usadas comunmente para evaluar este tipo 
+de algoritmos: Comparación 
+de ruta real del sensor con ruta estimada por algoritmo y distancia entre objetos de la escena.
+
 
 \end{document}
